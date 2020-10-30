@@ -16,7 +16,8 @@ contourPlot(
   ylab = "",
   col = NULL,
   breaks = NULL,
-  nlevels = 10
+  nlevels = 10,
+  legend_pos = 4
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ contourPlot(
 \item{breaks}{list of values indicating the contour ranges}
 
 \item{nlevels}{useful if breaks and col are left as null. Sets the number of levels of the contours to be plotted}
+
+\item{legend_pos}{set position of the colour bar. Default = 4.}
 }
 \value{
 A contour plot (similar to those in base, additional elements can be added using lines, points functions etc.

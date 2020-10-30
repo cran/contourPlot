@@ -14,6 +14,7 @@
 #' @param col list of colors to be applied to contours.
 #' @param breaks list of values indicating the contour ranges
 #' @param nlevels useful if breaks and col are left as null. Sets the number of levels of the contours to be plotted
+#' @param legend_pos set position of the colour bar. Default = 4.
 #' @return A contour plot (similar to those in base, additional elements can be added using lines, points functions etc.
 #' @examples
 #' x <- Volcontour$x
@@ -37,7 +38,7 @@ contourPlot<-function(
   x,y,z,
   nx = length(unique(x)),
   main = NULL, axis = TRUE, legend = TRUE, xlab = "", ylab = "",
-  col = NULL, breaks = NULL, nlevels = 10
+  col = NULL, breaks = NULL, nlevels = 10, legend_pos = 4
 ){
   # Convert x, y, z to matrix and interpolate values in between points
   Mat = interp(x,y,z, nx = nx, ny = nx )[[3]]
@@ -75,20 +76,84 @@ contourPlot<-function(
     xlim = range(ticks)*1.1, ylim = range(ticks)*1.1
   )
 
-  # Axis
-  if(axis){
-    axis(2, pos = -1.2 * r, at = Ticks, labels = NA)
-    text( -1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 2)
-    axis(1, pos = -1.2 * r, at = Ticks)
-  }
-
 
   # Legend
   if(legend){
     ylevs <- seq(-r, r, length = nlevels + 1)
-    rect(1.2 * r, ylevs[1:(length(ylevs) - 1)], 1.3 * r, ylevs[2:length(ylevs)], col = col, border = NA, xpd = TRUE)
-    rect(1.2 *r, min(ylevs), 1.3 *r, max(ylevs), border = "#66666650", xpd = TRUE)
-    text(1.3 * r, ylevs,round(breaks, 1), pos = 4, xpd = TRUE)
-  }
+    if(legend_pos==1){
+      rect(ylevs[1:(length(ylevs) - 1)], -1.2 * r, ylevs[2:length(ylevs)], -1.3 * r, col = col, border = NA, xpd = TRUE)
+      rect(min(ylevs), -1.2 *r, max(ylevs), -1.3 *r, border = "#66666650", xpd = TRUE)
+      if(length(breaks)<5){
+        text(ylevs, -1.3 * r, round(breaks, 1), pos = 1, xpd = TRUE)
+      }else{
+        text(seq(-r, r, length = 5), -1.3 * r, round(seq(min(breaks),max(breaks),length.out = 5),1), pos = 1, xpd = TRUE)
+      }
 
+      # Axis
+      if(axis){
+        axis(2, pos = -1.2 * r, at = Ticks, labels = NA)
+        text( -1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 2)
+        axis(3, pos = 1.2 * r, at = Ticks)
+      }
+
+    }
+    if(legend_pos==2){
+      rect(-1.2 * r, ylevs[1:(length(ylevs) - 1)], -1.3 * r, ylevs[2:length(ylevs)], col = col, border = NA, xpd = TRUE)
+      rect(-1.2 *r, min(ylevs), -1.3 *r, max(ylevs), border = "#66666650", xpd = TRUE)
+      if(length(breaks)<15){
+        text(-1.3 * r, ylevs, round(breaks, 1), pos = 2, xpd = TRUE)
+      }else{
+        text(-1.3 * r, seq(-r, r, length = 15), round(seq(min(breaks),max(breaks),length.out = 15),1), pos = 2, xpd = TRUE)
+      }
+
+      # Axis
+      if(axis){
+        axis(4, pos = 1.2 * r, at = Ticks, labels = NA)
+        text( 1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 4)
+        axis(1, pos = -1.2 * r, at = Ticks)
+      }
+
+    }
+    if(legend_pos==3){
+      rect(ylevs[1:(length(ylevs) - 1)], 1.2 * r, ylevs[2:length(ylevs)], 1.3 * r, col = col, border = NA, xpd = TRUE)
+      rect(min(ylevs), 1.2 *r, max(ylevs), 1.3 *r, border = "#66666650", xpd = TRUE)
+      if(length(breaks)<5){
+        text(ylevs, 1.3 * r, round(breaks, 1), pos = 3, xpd = TRUE)
+      }else{
+        text(seq(-r, r, length = 5), 1.3 * r, round(seq(min(breaks),max(breaks),length.out = 5),1), pos = 3, xpd = TRUE)
+      }
+
+      # Axis
+      if(axis){
+        axis(2, pos = -1.2 * r, at = Ticks, labels = NA)
+        text( -1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 2)
+        axis(1, pos = -1.2 * r, at = Ticks)
+      }
+
+    }
+    if(legend_pos==4){
+      rect(1.2 * r, ylevs[1:(length(ylevs) - 1)], 1.3 * r, ylevs[2:length(ylevs)], col = col, border = NA, xpd = TRUE)
+      rect(1.2 *r, min(ylevs), 1.3 *r, max(ylevs), border = "#66666650", xpd = TRUE)
+      if(length(breaks)<15){
+        text(1.3 * r, ylevs, round(breaks, 1), pos = 4, xpd = TRUE)
+      }else{
+        text(1.3 * r, seq(-r, r, length = 15), round(seq(min(breaks),max(breaks),length.out = 15),1), pos = 4, xpd = TRUE)
+      }
+
+      # Axis
+      if(axis){
+        axis(2, pos = -1.2 * r, at = Ticks, labels = NA)
+        text( -1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 2)
+        axis(1, pos = -1.2 * r, at = Ticks)
+      }
+
+    }
+  } else {
+    # Axis
+    if(axis){
+      axis(2, pos = -1.2 * r, at = Ticks, labels = NA)
+      text( -1.21 * r, Ticks,Ticks, xpd = TRUE, pos = 2)
+      axis(1, pos = -1.2 * r, at = Ticks)
+    }
+  }
 }
